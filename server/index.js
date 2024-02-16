@@ -3,13 +3,13 @@ import MongoToConnect from './db.js'
 import cors from 'cors'
 import multer from 'multer';
 import path from "path";
-
+import UserImage from './Models/Image.js'
 const app = express();
 const port = 3000;
 
 //connect with the database
 MongoToConnect();
-app.use(cors);
+app.use(cors());
 app.use(express.json())
 
 const storage = multer.diskStorage({
@@ -23,10 +23,15 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage
 })
-app.post('/upload', upload.single('file'), (req, res) => {
-    console.log(req.body);
-})
-
+app.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        const result = await UserImage.create({ image: req.file.filename });
+        res.json(result);
+    } catch (e) {
+        console.error(e);
+        res.status(500).send("Failed");
+    }
+});
 
 
 app.listen(port, () => {
