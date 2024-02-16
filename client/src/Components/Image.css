@@ -1,0 +1,8 @@
+.img-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
